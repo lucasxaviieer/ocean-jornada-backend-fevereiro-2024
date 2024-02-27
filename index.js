@@ -31,10 +31,18 @@ async function main() {
 
   const lista = ["Rich Sanchez", "Morty Smith", "Summer Smith"]
 
+  const db = client.db(dbName)
+  const collection = db.collection('items')
+
   // ReadAll -> [GET] /item
 
-  app.get('/item', function (req, res) {
-    res.send(lista)
+  app.get('/item', async function (req, res) {
+
+    // realizamos a operaçao de find na collection do mongodb
+    const items = await collection.find().toArray() // transformando a collection em lista que é o tipo do JS, detalhe, é uma promise de retorno
+
+    // envio de todos os documentos como resposta HTTP
+    res.send(items)
   })
 
   // Read by id -> [GET] /item/:id parametro de rota (:)
