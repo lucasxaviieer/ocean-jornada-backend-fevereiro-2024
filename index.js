@@ -68,14 +68,29 @@ async function main() {
 
   // Create -> [POST] /item
   app.post('/item', async function (req, res) {
-
-    const item = req.body // pegando o corpo da reqeuisicao
+    const item = req.body // pegando o corpo da requisicao
 
     // Colocamos o nome dentro da collection de itens
     await collection.insertOne(item)
 
     res.send(item) // retornando o item adicionado
   })
+
+  // UPDATE -> [PUT put or patch (put att tudo e o patch atualiza somente o q quer atualizar)] /item/:id
+  app.put('/item/:id', async function (req, res){
+    const id = req.params.id
+
+    // pegando novo item do corpo da requisiçao
+    const newItem = req.body
+
+    // atualizar no banco de dados na collection
+    await collection.updateOne(
+      { _id: new ObjectId(id) }, // pegando o id da requisiçao tranformando em objectid e filtrando pelo mesmo 
+      { $set: newValue } // setando o novo item de forma de update
+    )
+
+    res.send("Item atualizado com sucesso!")
+  }) 
 
   app.listen(3000)
 }
