@@ -68,7 +68,6 @@ async function main() {
 
   // Create -> [POST] /item
   app.post('/item', async function (req, res) {
-    const body = req.body; // Extraímos o corpo da requisição
 
     const item = req.body // pegando o corpo da reqeuisicao
 
