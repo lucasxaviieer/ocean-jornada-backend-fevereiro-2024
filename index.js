@@ -1,7 +1,8 @@
+require('dotenv').config()
 const express = require('express');
 const { MongoClient, ObjectId } = require('mongodb');
 
-const dbUrl = 'mongodb+srv://admin:aP3xoYqK6vccWXIM@cluster0.uwycphk.mongodb.net'
+const dbUrl = process.env.DATABASE_URL
 const dbName = 'OceanJornadaBackendFev2024'
 
 //criando o await dentro de uma async para unir as boxes e fazer os processos se interligarem   
