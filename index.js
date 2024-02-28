@@ -1,5 +1,5 @@
 const express = require('express');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 
 const dbUrl = 'mongodb+srv://admin:aP3xoYqK6vccWXIM@cluster0.uwycphk.mongodb.net'
 const dbName = 'OceanJornadaBackendFev2024'
@@ -47,11 +47,19 @@ async function main() {
 
   // Read by id -> [GET] /item/:id parametro de rota (:)
 
-  app.get('/item/:id', function (req, res) {
+  app.get('/item/:id', async function (req, res) {
     const id = req.params.id // extraindo o id da requisiçao
 
-    const item = lista[id] // acesso item na lista baseado no id da requisiçao
-    res.send(item) // envio do item obtido como resposta HTTP
+    const item = await collection.findOne({
+      _id: new ObjectId(id) // transformando um id string recebido na reqeuisiçao em um id do tipo objectid
+      // para assim comparar com os collections do banco
+    }) 
+    /*
+    if(item === null){
+      return app.status("404").send("Not found id")
+    }
+    */
+    res.send(item) // envio do document obtido como resposta HTTP
 
   })
 
@@ -59,16 +67,15 @@ async function main() {
   app.use(express.json())
 
   // Create -> [POST] /item
-  app.post('/item', function (req, res) {
+  app.post('/item', async function (req, res) {
     const body = req.body; // Extraímos o corpo da requisição
 
-    // pegamos o nome (string) que foi enviado dentro do body
-    const item = body.nome
+    const item = req.body // pegando o corpo da reqeuisicao
 
-    // Colocamos o nome dentro da lista de itens
-    lista.push(item)
+    // Colocamos o nome dentro da collection de itens
+    await collection.insertOne(item)
 
-    res.send("Item adicionado com sucesso!")
+    res.send(item) // retornando o item adicionado
   })
 
   app.listen(3000)
