@@ -86,7 +86,7 @@ async function main() {
     // atualizar no banco de dados na collection
     await collection.updateOne(
       { _id: new ObjectId(id) }, // pegando o id da requisiçao tranformando em objectid e filtrando pelo mesmo 
-      { $set: newValue } // setando o novo item de forma de update
+      { $set: newItem } // setando o novo item de forma de update
     )
 
     res.send("Item atualizado com sucesso!")
